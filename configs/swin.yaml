@@ -1,0 +1,55 @@
+# ==============================================================
+# Swin Transformer Configuration
+# ==============================================================
+
+model:
+  name: swin_tiny                 # swin_tiny | swin_small | swin_base
+  num_classes: 11                 # số lớp đầu ra
+  pretrained: true                # load pretrained weights từ ImageNet
+  freeze_backbone: false          # có đóng băng backbone không
+
+# --------------------------------------------------------------
+# Training Hyperparameters
+# --------------------------------------------------------------
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.0005
+  weight_decay: 1e-4
+  optimizer: AdamW
+  scheduler: cosine               # ['step', 'cosine', 'none']
+  step_size: 10                   # dùng khi scheduler='step'
+  gamma: 0.1
+
+# --------------------------------------------------------------
+# Dataset and DataLoader
+# --------------------------------------------------------------
+data:
+  train_dir: data/train
+  val_dir: data/val
+  test_dir: data/test
+  num_workers: 4
+  image_size: 224
+  augmentation:
+    horizontal_flip: true
+    random_crop: true
+    rotation: 10                  # degrees
+    color_jitter: true
+
+# --------------------------------------------------------------
+# Logging and Checkpoint
+# --------------------------------------------------------------
+logging:
+  log_dir: experiments/swin/logs
+  save_dir: experiments/swin/checkpoints
+  save_interval: 5                # epochs
+  print_interval: 50              # batches
+  tensorboard: true
+
+# --------------------------------------------------------------
+# Device setup
+# --------------------------------------------------------------
+device:
+  use_gpu: true
+  gpu_id: 0                       # chỉ định GPU (0-based index)
+  mixed_precision: true           # AMP (Automatic Mixed Precision)

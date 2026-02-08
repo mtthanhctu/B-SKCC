@@ -1,0 +1,43 @@
+# ==============================================================
+# ResNet Configuration
+# ==============================================================
+
+model:
+  name: resnet50                  # hoặc resnet101
+  num_classes: 11
+  pretrained: true
+  freeze_backbone: false
+
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 1e-4
+  optimizer: AdamW
+  scheduler: cosine
+  step_size: 10
+  gamma: 0.1
+
+data:
+  train_dir: data/train
+  val_dir: data/val
+  test_dir: data/test
+  num_workers: 4
+  image_size: 224
+  augmentation:
+    horizontal_flip: true
+    random_crop: true
+    rotation: 10
+    color_jitter: true
+
+logging:
+  log_dir: experiments/resnet/logs
+  save_dir: experiments/resnet/checkpoints
+  save_interval: 5
+  print_interval: 50
+  tensorboard: true
+
+device:
+  use_gpu: true
+  gpu_id: 0
+  mixed_precision: true

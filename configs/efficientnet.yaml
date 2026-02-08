@@ -1,0 +1,55 @@
+# ==============================================================
+# EfficientNetV2-B0 Configuration
+# ==============================================================
+
+model:
+  name: efficientnet_v2_s          # hoặc efficientnet_v2_b0 nếu muốn custom
+  num_classes: 11                  # số lớp đầu ra
+  pretrained: true                 # có load pretrained từ ImageNet không
+  freeze_backbone: false           # có đóng băng backbone không
+
+# --------------------------------------------------------------
+# Training Hyperparameters
+# --------------------------------------------------------------
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 1e-4
+  optimizer: AdamW
+  scheduler: cosine                # ['step', 'cosine', 'none']
+  step_size: 10                    # dùng khi scheduler='step'
+  gamma: 0.1
+
+# --------------------------------------------------------------
+# Dataset and DataLoader
+# --------------------------------------------------------------
+data:
+  train_dir: data/train
+  val_dir: data/val
+  test_dir: data/test
+  num_workers: 4
+  image_size: 224
+  augmentation:
+    horizontal_flip: true
+    random_crop: true
+    rotation: 10                   # degrees
+    color_jitter: true
+
+# --------------------------------------------------------------
+# Logging and Checkpoint
+# --------------------------------------------------------------
+logging:
+  log_dir: experiments/efficientnet/logs
+  save_dir: experiments/efficientnet/checkpoints
+  save_interval: 5                 # epochs
+  print_interval: 50               # batches
+  tensorboard: true
+
+# --------------------------------------------------------------
+# Device setup
+# --------------------------------------------------------------
+device:
+  use_gpu: true
+  gpu_id: 0                        # chỉ định GPU (0-based index)
+  mixed_precision: true            # AMP (Automatic Mixed Precision)
